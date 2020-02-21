@@ -1190,7 +1190,7 @@ class KFlash:
                     _port = list_port_info.device
                     KFlash.log(INFO_MSG,"COM Port Auto Detected, Selected ", _port, BASH_TIPS['DEFAULT'])
                 except StopIteration:
-                    err = (ERROR_MSG,"No vaild COM Port found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`--port/-p`',BASH_TIPS['DEFAULT'])
+                    err = (ERROR_MSG,"No valid COM Port found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`--port/-p`',BASH_TIPS['DEFAULT'])
                     err = tuple2str(err)
                     raise_exception( Exception(err) )
         else:
