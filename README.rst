@@ -51,18 +51,30 @@ download circuit must be set.
 Installation
 ------------
 
-.. code:: bash
-
-    sudo pip3 install kflash
-
-If you receive an error, please try
+If you installed as a root user, please try:
 
 .. code:: bash
 
-    sudo python -m pip install kflash
-    sudo python3 -m pip install kflash
-    sudo pip install kflash
-    sudo pip2 install kflash
+    sudo pip3 install --upgrade kflash
+
+If you installed as a non root user, please try:
+
+.. code:: bash
+    pip install kflash --user --upgrade
+
+And then add ``${HOME}/.local/bin`` to your ``${PATH}``, .e.g, in your ``.bashrc`` or ``.zshrc``.
+
+.. code:: bash
+    export PATH=${HOME}/.local/bin:${PATH}
+
+If you got an error, please try
+
+.. code:: bash
+
+    sudo python -m pip install --upgrade kflash
+    sudo python3 -m pip install --upgrade kflash
+    sudo pip install --upgrade kflash
+    sudo pip2 install --upgrade kflash
 
 For linux users, first of all, you must add yourself to dialout group.
 Or you have to use root permission every time.
@@ -70,6 +82,12 @@ Or you have to use root permission every time.
 .. code:: bash
 
     sudo usermod -a -G dialout $(whoami)
+
+For gentoo user
+
+.. code:: bash
+
+    sudo usermod -a -G uucp $(whoami)
 
 Sample Usage
 ------------
