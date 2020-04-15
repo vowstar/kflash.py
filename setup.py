@@ -8,20 +8,20 @@ from setuptools import setup, find_packages
 setup(
     name='kflash',
     py_modules=['kflash'],
-    version='0.8.3',
+    version='0.8.5',
     description=(
         'Kendryte UART ISP Utility - programming code to k210'
     ),
     long_description=open('README.rst').read(),
     long_description_content_type='text/x-rst',
-    author='https://github.com/kendryte/kflash.py/graphs/contributors',
-    author_email='auto@canaan-creative.com',
+    author='https://github.com/vowstar/kflash.py/graphs/contributors',
+    author_email='vowstar@gmail.com',
     maintainer='Huang Rui',
     maintainer_email='vowstar@gmail.com',
     license='MIT License',
     packages=find_packages(),
     platforms=["all"],
-    url='https://github.com/kendryte/kflash.py',
+    url='https://github.com/vowstar/kflash.py',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Operating System :: OS Independent',
