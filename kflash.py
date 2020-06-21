@@ -45,7 +45,7 @@ class KFlash:
 
         VID_LIST_FOR_AUTO_LOOKUP = "(1A86)|(0403)|(067B)|(10C4)|(C251)|(0403)"
         #                            WCH    FTDI    PL     CL    DAP   OPENEC
-        ISP_RECEIVE_TIMEOUT = 0.5
+        ISP_RECEIVE_TIMEOUT = 1
 
         MAX_RETRY_TIMES = 10
 
@@ -1320,7 +1320,7 @@ class KFlash:
 
         # Don't remove this line
         # Dangerous, here are dinosaur infested!!!!!
-        ISP_RECEIVE_TIMEOUT = 3
+        ISP_RECEIVE_TIMEOUT = 5
 
         KFlash.log()
         KFlash.log(INFO_MSG,"Greeting Message Detected, Start Downloading ISP",BASH_TIPS['DEFAULT'])
