@@ -543,9 +543,9 @@ class KFlash:
         class MAIXLoader:
             def change_baudrate(self, baudrate):
                 KFlash.log(INFO_MSG,"Selected Baudrate: ", baudrate, BASH_TIPS['DEFAULT'])
-                out = struct.pack('III', 0, 4, baudrate)
-                crc32_checksum = struct.pack('I', binascii.crc32(out) & 0xFFFFFFFF)
-                out = struct.pack('HH', 0xd6, 0x00) + crc32_checksum + out
+                out = struct.pack('<III', 0, 4, baudrate)
+                crc32_checksum = struct.pack('<I', binascii.crc32(out) & 0xFFFFFFFF)
+                out = struct.pack('<HH', 0xd6, 0x00) + crc32_checksum + out
                 self.write(out)
                 time.sleep(0.05)
                 self._port.baudrate = baudrate
@@ -572,9 +572,9 @@ class KFlash:
                     # This is for openec, contained ft2232, goE and trainer
                     KFlash.log(INFO_MSG,"FT2232 mode", BASH_TIPS['DEFAULT'])
                     baudrate_stage0 = int(baudrate * 38.6 / 38)
-                    out = struct.pack('III', 0, 4, baudrate_stage0)
-                    crc32_checksum = struct.pack('I', binascii.crc32(out) & 0xFFFFFFFF)
-                    out = struct.pack('HH', 0xc6, 0x00) + crc32_checksum + out
+                    out = struct.pack('<III', 0, 4, baudrate_stage0)
+                    crc32_checksum = struct.pack('<I', binascii.crc32(out) & 0xFFFFFFFF)
+                    out = struct.pack('<HH', 0xc6, 0x00) + crc32_checksum + out
                     self.write(out)
                     time.sleep(0.05)
                     self._port.baudrate = baudrate
@@ -846,11 +846,11 @@ class KFlash:
             def boot(self, address=0x80000000):
                 KFlash.log(INFO_MSG,"Booting From " + hex(address),BASH_TIPS['DEFAULT'])
 
-                out = struct.pack('II', address, 0)
+                out = struct.pack('<II', address, 0)
 
-                crc32_checksum = struct.pack('I', binascii.crc32(out) & 0xFFFFFFFF)
+                crc32_checksum = struct.pack('<I', binascii.crc32(out) & 0xFFFFFFFF)
 
-                out = struct.pack('HH', 0xc5, 0x00) + crc32_checksum + out  # op: ISP_MEMORY_WRITE: 0xc3
+                out = struct.pack('<HH', 0xc5, 0x00) + crc32_checksum + out  # op: ISP_MEMORY_WRITE: 0xc3
                 self.write(out)
 
             def recv_debug(self):
@@ -882,9 +882,9 @@ class KFlash:
             def init_flash(self, chip_type):
                 chip_type = int(chip_type)
                 KFlash.log(INFO_MSG,"Selected Flash: ",("In-Chip", "On-Board")[chip_type],BASH_TIPS['DEFAULT'])
-                out = struct.pack('II', chip_type, 0)
-                crc32_checksum = struct.pack('I', binascii.crc32(out) & 0xFFFFFFFF)
-                out = struct.pack('HH', 0xd7, 0x00) + crc32_checksum + out
+                out = struct.pack('<II', chip_type, 0)
+                crc32_checksum = struct.pack('<I', binascii.crc32(out) & 0xFFFFFFFF)
+                out = struct.pack('<HH', 0xd7, 0x00) + crc32_checksum + out
                 '''Retry when it have error'''
                 retry_count = 0
                 while 1:
@@ -943,11 +943,11 @@ class KFlash:
                     while 1:
                         self.checkKillExit()
                         #KFlash.log('[INFO] sending chunk', i, '@address', hex(address), 'chunklen', len(chunk))
-                        out = struct.pack('II', address, len(chunk))
+                        out = struct.pack('<II', address, len(chunk))
 
-                        crc32_checksum = struct.pack('I', binascii.crc32(out + chunk) & 0xFFFFFFFF)
+                        crc32_checksum = struct.pack('<I', binascii.crc32(out + chunk) & 0xFFFFFFFF)
 
-                        out = struct.pack('HH', 0xc3, 0x00) + crc32_checksum + out + chunk  # op: ISP_MEMORY_WRITE: 0xc3
+                        out = struct.pack('<HH', 0xc3, 0x00) + crc32_checksum + out + chunk  # op: ISP_MEMORY_WRITE: 0xc3
                         sent = self.write(out)
                         #KFlash.log('[INFO]', 'sent', sent, 'bytes', 'checksum', binascii.hexlify(crc32_checksum).decode())
 
@@ -982,11 +982,11 @@ class KFlash:
 
                 for n, chunk in enumerate(data_chunks):
                     #KFlash.log('[INFO] sending chunk', i, '@address', hex(address))
-                    out = struct.pack('II', address, len(chunk))
+                    out = struct.pack('<II', address, len(chunk))
 
-                    crc32_checksum = struct.pack('I', binascii.crc32(out + chunk) & 0xFFFFFFFF)
+                    crc32_checksum = struct.pack('<I', binascii.crc32(out + chunk) & 0xFFFFFFFF)
 
-                    out = struct.pack('HH', 0xd4, 0x00) + crc32_checksum + out + chunk
+                    out = struct.pack('<HH', 0xd4, 0x00) + crc32_checksum + out + chunk
                     #KFlash.log("[$$$$]", binascii.hexlify(out[:32]).decode())
                     retry_count = 0
                     while True:
@@ -1059,7 +1059,7 @@ class KFlash:
 
                     firmware_len = len(firmware_bin)
 
-                    data = aes_cipher_flag + struct.pack('I', firmware_len) + firmware_bin
+                    data = aes_cipher_flag + struct.pack('<I', firmware_len) + firmware_bin
 
                     sha256_hash = hashlib.sha256(data).digest()
 
