@@ -6,11 +6,14 @@ python:
   - "3.8"
   - "3.9"
 
-install: "pip install pylint"
+install: "pip install pylint twine"
 
 script:
   - python setup.py install
   - pylint --enable=E --disable=W,R,C *.py
+  - python setup.py sdist
+  - python setup.py bdist
+  - twine check dist/*
 
 deploy:
   provider: pypi

@@ -71,11 +71,13 @@ If you installed as a root user, please try:
 If you installed as a non root user, please try:
 
 .. code:: bash
+
     pip install kflash --user --upgrade
 
 And then add ``${HOME}/.local/bin`` to your ``${PATH}``, .e.g, in your ``.bashrc`` or ``.zshrc``.
 
 .. code:: bash
+
     export PATH=${HOME}/.local/bin:${PATH}
 
 If you got an error, please try
