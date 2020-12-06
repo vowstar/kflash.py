@@ -1382,7 +1382,7 @@ class KFlash:
         if file_format == ProgramFileFormat.FMT_KFPKG:
             KFlash.log(INFO_MSG,"Extracting KFPKG ... ", BASH_TIPS['DEFAULT'])
             firmware_bin.close()
-            with tempfile.TemporaryDirectory() as tmpdir:
+            with backports.tempfile.TemporaryDirectory() as tmpdir:
                 try:
                     with zipfile.ZipFile(args.firmware) as zf:
                         zf.extractall(tmpdir)
