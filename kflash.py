@@ -1166,7 +1166,7 @@ class KFlash:
             if args.Board == "goE":
                 list_port_info = list(serial.tools.list_ports.grep("0403")) #Take the second one
                 if len(list_port_info) == 0:
-                    err = (ERROR_MSG,"No vaild COM Port found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`--port/-p`',BASH_TIPS['DEFAULT'])
+                    err = (ERROR_MSG,"No valid COM Port found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`--port/-p`',BASH_TIPS['DEFAULT'])
                     err = tuple2str(err)
                     raise_exception( Exception(err) )
                 list_port_info.sort()
@@ -1178,7 +1178,7 @@ class KFlash:
             elif args.Board == "trainer":
                 list_port_info = list(serial.tools.list_ports.grep("0403")) #Take the first one
                 if(len(list_port_info)==0):
-                    err = (ERROR_MSG,"No vaild COM Port found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`--port/-p`',BASH_TIPS['DEFAULT'])
+                    err = (ERROR_MSG,"No valid COM Port found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`--port/-p`',BASH_TIPS['DEFAULT'])
                     err = tuple2str(err)
                     raise_exception( Exception(err) )
                 list_port_info.sort()
@@ -1237,7 +1237,7 @@ class KFlash:
             try:
                 retry_count = retry_count + 1
                 if retry_count > 15:
-                    err = (ERROR_MSG,"No vaild Kendryte K210 found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`-p '+('/dev/ttyUSB0', 'COM3')[sys.platform == 'win32']+'`',BASH_TIPS['DEFAULT'])
+                    err = (ERROR_MSG,"No valid Kendryte K210 found in Auto Detect, Check Your Connection or Specify One by"+BASH_TIPS['GREEN']+'`-p '+('/dev/ttyUSB0', 'COM3')[sys.platform == 'win32']+'`',BASH_TIPS['DEFAULT'])
                     err = tuple2str(err)
                     raise_exception( Exception(err) )
                 if args.Board == "dan" or args.Board == "bit" or args.Board == "trainer":
