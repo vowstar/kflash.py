@@ -523,7 +523,7 @@ class KFlash:
                         pass
                 if not cr:
                     try:
-                        cr = (os.env['LINES'], os.env['COLUMNS'])
+                        cr = (os.environ['LINES'], os.environ['COLUMNS'])
                     except:
                         return None
                 return int(cr[1]), int(cr[0])

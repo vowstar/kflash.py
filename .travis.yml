@@ -8,8 +8,11 @@ python:
 virtualenv:
   system_site_packages: true
 
+install: "pip install pylint"
+
 script:
   - python setup.py install
+  - pylint --enable=E --disable=W,R,C *.py
 
 deploy:
   provider: pypi
@@ -18,3 +21,5 @@ deploy:
     secure: laaMcNt8I3ozqiu+IBU7bjT1zPF/ON5FSvuxokurQLTEkzuIlwG2U1vNsCwg2IjVmm6/MzkVv+ywhoSRO0fHPj4aivynfWdqjukaDAecInL6UNjCcN0eUZ0TVNv/NyZrBapebKvfDDTq9O3JeHt5ofz4XIVeDXS33AsjB9oZKI7Qi1ZwDR409ONsQobwj97TtIQ3PAtFYJ/rAHqyQ6CK6ftp3Cvky8huywrdJzU2DxZCmDcGsSIZcfnDd3yUctcY5r9JS1GpWfcI1pOp39zL/pitkJTO9YWd92qn4btIymT+t/P9c3IRH2KUhjPMGJi13ZR8hYD8btLDLNysLAac9AfI+jfEibP5aNoa43vlAy4ERqZgZeOBafBZGz/g4B19AhSicvQ4zodDTLMRXpYf0rOjvfQCpLrcqhjyyeaQBrfuMC4WA6gvQaOFIzaUr0SF88HTpYvYNFWe3a3CoBajQH18TfV3vFazRCVejQ2EmWOQscViZoT/BkSCHXv5vbZ0//4j9tN/aQ+h4I1+eAvJ2L3x1GwW7or9HxTCkmuepmO4gCVFblg2qIy7DH4Y2ZSuyFDY/kdtqBXiAjZf6Vv9dSeKJczrVgi6eIhvs0IrEptl9iLV80UH8Ymj0/0pCCLReKapHLm+pswBd+XLRjZ34ChCFhWoOVNoRfUQJT7kTHQ=
   on:
     tags: true
+  distributions: sdist bdist_wheel
+  skip_existing: true
