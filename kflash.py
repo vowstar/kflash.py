@@ -29,7 +29,9 @@ class KFlash:
     @staticmethod
     def log(*args, **kwargs):
         if KFlash.print_callback:
+            # pylint: disable=not-callable
             KFlash.print_callback(*args, **kwargs)
+            # pylint: enable=not-callable
         else:
             print(*args, **kwargs)
 
@@ -541,6 +543,9 @@ class KFlash:
                 return columns, rows
 
         class MAIXLoader:
+            def raise_exception(self, exception):
+                raise_exception(exception)
+
             def change_baudrate(self, baudrate):
                 KFlash.log(INFO_MSG,"Selected Baudrate: ", baudrate, BASH_TIPS['DEFAULT'])
                 out = struct.pack('<III', 0, 4, baudrate)
