@@ -1,6 +1,8 @@
 kflash, A Python-based Kendryte K210 UART ISP Utility
 =====================================================
 
+The latest release version will put here.
+
 Usage
 -----
 
@@ -165,9 +167,7 @@ Requirements
 
     Python3 is recommended.
 
-If your python version below python3.4, you need:
-
--  enum34>=1.1.6
+If your python version below python3.6, you need upgrade python at least python 3.6.
 
 Windows Requirements
 ~~~~~~~~~~~~~~~~~~~~
@@ -181,8 +181,6 @@ Windows Requirements
     python get-pip.py
     python -m pip install pyserial
     python -m pip install pyelftools
-    # When you python version below python3.4
-    python -m pip install enum34
 
 --------------
 
