@@ -1208,7 +1208,7 @@ class KFlash:
         # 0. Check firmware
         try:
             firmware_bin = open(args.firmware, 'rb')
-        except FileNotFoundError:
+        except OSError:
             err = (ERROR_MSG,'Unable to find the firmware at ', args.firmware, BASH_TIPS['DEFAULT'])
             err = tuple2str(err)
             raise_exception( Exception(err) )
@@ -1386,7 +1386,7 @@ class KFlash:
                 try:
                     with zipfile.ZipFile(args.firmware) as zf:
                         zf.extractall(tmpdir)
-                except zipfile.BadZipFile:
+                except zipfile.error:
                     err = (ERROR_MSG,'Unable to Decompress the kfpkg, your file might be corrupted.',BASH_TIPS['DEFAULT'])
                     err = tuple2str(err)
                     raise_exception( Exception(err) )

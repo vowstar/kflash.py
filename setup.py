@@ -40,6 +40,7 @@ setup(
     install_requires=[
         "pyserial>=3.4",
         "pyelftools>=0.25",
+        "backports.tempfile>=1.0",
     ],
     entry_points={
         "console_scripts": [
