@@ -12,7 +12,7 @@ import binascii
 import hashlib
 import argparse
 import math
-import zipfile, tempfile
+import zipfile, tempfile, backports.tempfile
 import json
 import re
 import os
