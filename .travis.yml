@@ -5,8 +5,6 @@ python:
   - "3.7"
   - "3.8"
   - "3.9"
-virtualenv:
-  system_site_packages: true
 
 install: "pip install pylint"
 
