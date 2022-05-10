@@ -18,8 +18,8 @@ Usage
 .. code:: bash
 
     # kflash --help
-    usage: kflash [-h] [-p PORT] [-f FLASH] [-b BAUDRATE] [-l BOOTLOADER]
-                    [-k KEY] [-v] [-t] [-n] [-s] [-B BOARD] [-S SLOW]
+    usage: kflash.py [-h] [-p PORT] [-f FLASH] [-b BAUDRATE] [-l BOOTLOADER] [-e] [-k KEY] [-v] [--verbose] [-t] [-n] [-s]
+                    [-B {kd233,dan,bit,bit_mic,goE,goD,maixduino,trainer}] [-S]
                     firmware
 
     positional arguments:
@@ -33,16 +33,17 @@ Usage
     -b BAUDRATE, --baudrate BAUDRATE
                             UART baudrate for uploading firmware
     -l BOOTLOADER, --bootloader BOOTLOADER
-                            bootloader bin path
+                            Bootloader bin path
+    -e, --erase           Erase flash
     -k KEY, --key KEY     AES key in hex, if you need encrypt your firmware.
-    -v, --verbose         increase output verbosity
+    -v, --version         Print version.
+    --verbose             Increase output verbosity
     -t, --terminal        Start a terminal after finish (Python miniterm)
     -n, --noansi          Do not use ANSI colors, recommended in Windows CMD
     -s, --sram            Download firmware to SRAM and boot
-    -B BOARD, --Board BOARD
-                            Select dev board, e.g. kd233, dan, bit, goD, goE or
-                            trainer
-    -S SLOW, --Slow SLOW  Slow download mode
+    -B {kd233,dan,bit,bit_mic,goE,goD,maixduino,trainer}, --Board {kd233,dan,bit,bit_mic,goE,goD,maixduino,trainer}
+                            Select dev board
+    -S, --Slow            Slow download mode
 
 Attention
 ---------
@@ -168,6 +169,11 @@ Execute user code directly in SRAM and view in serial terminal,
     python3 kflash.py -b 115200 -B goE -s -t hello_world
     # For `.bin` file
     python3 kflash.py -b 115200 -B goE -s -t hello_world.bin
+
+Erase flash before download firmware, use -e (--erase) option
+
+.. code:: bash
+    python kflash.py -e -B bit -b 1500000 -p /dev/ttyUSB0 ../kendryte-standalone-sdk/build/hello_world.bin
 
 Requirements
 ------------
