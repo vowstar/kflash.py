@@ -3,5 +3,5 @@
     "name": "tool-kflash-kendryte210",
     "system": "*",
     "url": "https://github.com/vowstar/kflash.py",
-    "version": "1.0.2"
+    "version": "1.0.5"
 }
