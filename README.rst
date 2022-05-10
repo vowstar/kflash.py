@@ -7,8 +7,8 @@ kflash, A Python-based Kendryte K210 UART ISP Utility
 .. image:: https://img.shields.io/pypi/pyversions/kflash.svg
     :target: https://pypi.org/project/kflash/
 
-.. image:: https://travis-ci.com/vowstar/kflash.py.svg?branch=master
-    :target: https://travis-ci.com/vowstar/kflash.py
+.. image:: https://github.com/vowstar/kflash.py/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/vowstar/kflash.py/actions/workflows/main.yml
 
 The latest release version will put here, and sync with pip.
 
