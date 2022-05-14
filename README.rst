@@ -173,7 +173,8 @@ Execute user code directly in SRAM and view in serial terminal,
 Erase flash before download firmware, use -e (--erase) option
 
 .. code:: bash
-    python kflash.py -e -B bit -b 1500000 -p /dev/ttyUSB0 ../kendryte-standalone-sdk/build/hello_world.bin
+
+    python3 kflash.py -e -B bit -b 1500000 -p /dev/ttyUSB0 hello_world.bin
 
 Requirements
 ------------
