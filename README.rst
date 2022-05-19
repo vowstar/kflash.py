@@ -170,11 +170,13 @@ Execute user code directly in SRAM and view in serial terminal,
     # For `.bin` file
     python3 kflash.py -b 115200 -B goE -s -t hello_world.bin
 
-Erase flash before download firmware, use -e (--erase) option
+Erase flash before download firmware, use -e (--erase) option to do chip erase before download firmware,
+or use the erase command to erase a specific address and length without download firmware.
 
 .. code:: bash
 
     python3 kflash.py -e -B bit -b 1500000 -p /dev/ttyUSB0 hello_world.bin
+    python3 kflash.py -b 115200 -p /dev/ttyUSB0 erase --addr 0x00011000 --length 0x1000
 
 Requirements
 ------------
