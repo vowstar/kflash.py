@@ -1325,6 +1325,7 @@ class KFlash:
             setattr(args, "flash", 1)
             setattr(args, "baudrate", 115200)
             setattr(args, "bootloader", None)
+            setattr(args, "erase", False)
             setattr(args, "key", None)
             setattr(args, "verbose", False)
             setattr(args, "terminal", False)
