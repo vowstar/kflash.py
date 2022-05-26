@@ -42,7 +42,7 @@ setup(
     install_requires=[
         "pyserial>=3.4",
         "pyelftools>=0.25",
-        "enum34>=1.1.10",
+        "enum34>=1.1.10 if python_version < 3.4.0",
     ],
     entry_points={
         "console_scripts": [
