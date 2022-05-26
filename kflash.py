@@ -606,7 +606,7 @@ class KFlash:
                 # Contributor: [@rgwan](https://github.com/rgwan)
                 #              rgwan <dv.xw@qq.com>
                 baudrate = 1500000
-                if args.Board == "goE" or args.Board == "trainer":
+                if args.Board == "goE" or args.Board == "trainer" or args.Board == "bit_mic":
                     KFlash.log(INFO_MSG,"Selected Stage0 Baudrate: ", baudrate, BASH_TIPS['DEFAULT'])
                     # This is for openec, contained ft2232, goE and trainer
                     KFlash.log(INFO_MSG,"FT2232 mode", BASH_TIPS['DEFAULT'])
