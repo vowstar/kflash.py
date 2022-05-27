@@ -1128,22 +1128,52 @@ class KFlash:
                     out = struct.pack('<HH', 0xd4, 0x00) + crc32_checksum + out + chunk
                     #KFlash.log("[$$$$]", binascii.hexlify(out[:32]).decode())
                     retry_count = 0
-                    while True:
+                    while 1:
+                        sent = self.write(out)
+                        retry_count = retry_count + 1
                         try:
-                            sent = self.write(out)
+                            op, reason, text = FlashModeResponse.parse(self.recv_one_return(timeout_s=90))
                             #KFlash.log('[INFO]', 'sent', sent, 'bytes', 'checksum', crc32_checksum)
-                            self.flash_recv_debug()
-                        except:
-                            retry_count = retry_count + 1
+                            #self.flash_recv_debug()
+                        except Exception as e:
+                            #print(e)
+                            if not self._port.isOpen():
+                                self._port.open()
+                            continue
                             if retry_count > MAX_RETRY_TIMES:
                                 err = (ERROR_MSG,"Error Count Exceeded, Stop Trying",BASH_TIPS['DEFAULT'])
                                 err = tuple2str(err)
                                 self.raise_exception( Exception(err) )
+                            time.sleep(0.1)
+                            continue
+                        if FlashModeResponse.Operation(op) == FlashModeResponse.Operation.ISP_FLASH_WRITE and FlashModeResponse.ErrorCode(reason) == FlashModeResponse.ErrorCode.ISP_RET_OK:
+                            #KFlash.log(INFO_MSG,"Send write command successfully, writing ...",BASH_TIPS['DEFAULT'])
+                            self._port.flushInput()
+                            self._port.flushOutput()
+                            break
+                        elif FlashModeResponse.Operation(op) == FlashModeResponse.Operation.ISP_FLASH_WRITE and FlashModeResponse.ErrorCode(reason) == FlashModeResponse.ErrorCode.ISP_RET_FLASH_BUSY:
+                            #KFlash.log(INFO_MSG,"Flash is writing ...",BASH_TIPS['DEFAULT'])
+                            self._port.flushInput()
+                            self._port.flushOutput()
+                            retry_count = 0
+                            time.sleep(0.5)
+                            continue
+                        elif FlashModeResponse.Operation(op) == FlashModeResponse.Operation.ISP_FLASH_WRITE and FlashModeResponse.ErrorCode(reason) == FlashModeResponse.ErrorCode.ISP_RET_BAD_DATA_CHECKSUM:
+                            self._port.flushInput()
+                            self._port.flushOutput()
+                            KFlash.log(WARN_MSG,"Data checksum error, retrying...",BASH_TIPS['DEFAULT'])
+                            time.sleep(0.1)
+                        else:
+                            if retry_count > MAX_RETRY_TIMES:
+                                err = (ERROR_MSG,"Failed to write to K210's flash",BASH_TIPS['DEFAULT'])
+                                err = tuple2str(err)
+                                self.raise_exception( Exception(err) )
+                            KFlash.log(WARN_MSG,"Unexcepted Return recevied, retrying...",BASH_TIPS['DEFAULT'])
+                            time.sleep(0.1)
                             continue
                         break
+                    # Write success, move to next chunk
                     address += len(chunk)
-
-
 
             def flash_erase(self, erase_addr = 0, erase_len = 0):
                 #KFlash.log('[DEBUG] erasing spi flash.')
