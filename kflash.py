@@ -1400,7 +1400,7 @@ class KFlash:
                         continue
                     self.flash_dataframe(segment.data(), segment['p_vaddr'])
 
-            def flash_firmware(self, firmware_bin, aes_key = None, address_offset = 0, sha256Prefix = True, filename = ""):
+            def flash_firmware(self, firmware_bin, aes_key = None, address_offset = 0, sha256Prefix = True, filename = "", iomode = "dio"):
                 # type: (bytes, bytes, int, bool) -> None
                 # Don't remove above code!
 
@@ -1413,6 +1413,13 @@ class KFlash:
                     # Add header to the firmware
                     # Format: SHA256(after)(32bytes) + AES_CIPHER_FLAG (1byte) + firmware_size(4bytes) + firmware_data
                     aes_cipher_flag = b'\x01' if aes_key else b'\x00'
+
+                    if iomode == "dio":
+                        # Enable DIO mode
+                        aes_cipher_flag = bytes([int(aes_cipher_flag[0]) | 0x02])
+                        KFlash.log(INFO_MSG, "Flash mode: DIO, Dual SPI serial throughput rates reach around 20 Mbps", BASH_TIPS['DEFAULT'])
+                    else:
+                        KFlash.log(INFO_MSG, "Flash mode: QIO, Quad SPI Serial throughput rates reach around 40 Mbps", BASH_TIPS['DEFAULT'])
 
                     # Encryption
                     if aes_key:
@@ -1487,8 +1494,9 @@ class KFlash:
             parser.add_argument("-s", "--sram", help="Download firmware to SRAM and boot", default=False, action="store_true")
             parser.add_argument("-B", "--Board",required=False, type=str, help="Select dev board", choices=boards_choices)
             parser.add_argument("-S", "--Slow",required=False, help="Slow download mode", default=False, action="store_true")
-            parser.add_argument("-A", "--addr",required=False, help="flash addr", type=str, default="-1")
-            parser.add_argument("-L", "--length",required=False, help="flash length", type=str, default="-1")
+            parser.add_argument("-A", "--addr",required=False, help="Erase flash addr", type=str, default="-1")
+            parser.add_argument("-L", "--length",required=False, help="Erase flash length", type=str, default="-1")
+            parser.add_argument("-i", "--iomode",required=False, help="SPI flash IO mode, dio for dual SPI, qio for quad SPI", type=str, default="dio")
             parser.add_argument("firmware", help="firmware bin path")
             args = parser.parse_args()
         else:
@@ -1507,6 +1515,7 @@ class KFlash:
             setattr(args, "Slow", False)
             setattr(args, "addr", -1)
             setattr(args, "length", -1)
+            setattr(args, "iomode", "dio")
 
         # udpate args for none terminal call
         if not terminal:
@@ -1811,7 +1820,7 @@ class KFlash:
                     self.checkKillExit()
                     KFlash.log(INFO_MSG,"Writing",lBinFiles['bin'],"into","0x%08x"%int(lBinFiles['address'], 0),BASH_TIPS['DEFAULT'])
                     with open(os.path.join(tmpdir, lBinFiles["bin"]), "rb") as firmware_bin:
-                        self.loader.flash_firmware(firmware_bin.read(), None, int(lBinFiles['address'], 0), lBinFiles['sha256Prefix'], filename=lBinFiles['bin'])
+                        self.loader.flash_firmware(firmware_bin.read(), None, int(lBinFiles['address'], 0), lBinFiles['sha256Prefix'], filename=lBinFiles['bin'], iomode=args.iomode)
         else:
             if args.firmware == "erase":
                 if args.addr.lower().startswith("0x"):
@@ -1840,9 +1849,9 @@ class KFlash:
                         if len(aes_key) != 16:
                             raise_exception( ValueError('AES key must by 16 bytes') )
 
-                        self.loader.flash_firmware(firmware_bin.read(), aes_key=aes_key)
+                        self.loader.flash_firmware(firmware_bin.read(), aes_key=aes_key, iomode=args.iomode)
                     else:
-                        self.loader.flash_firmware(firmware_bin.read())
+                        self.loader.flash_firmware(firmware_bin.read(), iomode=args.iomode)
 
         # 3. boot
         KFlash.log(INFO_MSG,"Rebooting...", BASH_TIPS['DEFAULT'])

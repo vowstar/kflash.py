@@ -18,8 +18,9 @@ Usage
 .. code:: bash
 
     # kflash --help
-    usage: kflash.py [-h] [-p PORT] [-f FLASH] [-b BAUDRATE] [-l BOOTLOADER] [-e] [-k KEY] [-v] [--verbose] [-t] [-n] [-s]
-                    [-B {kd233,dan,bit,bit_mic,goE,goD,maixduino,trainer}] [-S]
+    usage: kflash.py [-h] [-p PORT] [-f FLASH] [-b BAUDRATE] [-l BOOTLOADER] [-e] [-k KEY] [-v] [--verbose] [-t]
+                    [-n] [-s] [-B {kd233,dan,bit,bit_mic,goE,goD,maixduino,trainer}] [-S] [-A ADDR] [-L LENGTH]
+                    [-i IOMODE]
                     firmware
 
     positional arguments:
@@ -34,7 +35,7 @@ Usage
                             UART baudrate for uploading firmware
     -l BOOTLOADER, --bootloader BOOTLOADER
                             Bootloader bin path
-    -e, --erase           Erase flash
+    -e, --erase           Erase flash (chip erase)
     -k KEY, --key KEY     AES key in hex, if you need encrypt your firmware.
     -v, --version         Print version.
     --verbose             Increase output verbosity
@@ -44,6 +45,11 @@ Usage
     -B {kd233,dan,bit,bit_mic,goE,goD,maixduino,trainer}, --Board {kd233,dan,bit,bit_mic,goE,goD,maixduino,trainer}
                             Select dev board
     -S, --Slow            Slow download mode
+    -A ADDR, --addr ADDR  Erase flash addr
+    -L LENGTH, --length LENGTH
+                            Erase flash length
+    -i IOMODE, --iomode IOMODE
+                            SPI flash IO mode, dio for dual SPI, qio for quad SPI
 
 Attention
 ---------
@@ -177,6 +183,18 @@ or use the erase command to erase a specific address and length without download
 
     python3 kflash.py -e -B bit -b 1500000 -p /dev/ttyUSB0 hello_world.bin
     python3 kflash.py -b 115200 -p /dev/ttyUSB0 erase --addr 0x00011000 --length 0x1000
+
+Select SPI I/O mode by use --iomode option.
+dio is set flash mode to Dual SPI, the Dual SPI serial throughput rates reach around 20 Mbps.
+qio is set flash mode to Quad SPI, the Quad SPI serial throughput rates reach around 40 Mbps.
+
+Usually DIO mode has better compatibility and QIO mode has faster speed.
+If you find that your k210 cannot boot, you can try DIO mode.
+
+.. code:: bash
+
+    python3 kflash.py -i dio -B bit -b 1500000 -p /dev/ttyUSB0 hello_world.bin
+    python3 kflash.py -i qio -B bit -b 1500000 -p /dev/ttyUSB0 hello_world.bin
 
 Requirements
 ------------
