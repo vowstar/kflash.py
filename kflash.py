@@ -1450,7 +1450,7 @@ class KFlash:
             parser.add_argument("-l", "--bootloader", help="Bootloader bin path", required=False, default=None)
             parser.add_argument("-e", "--erase",required=False, help="Erase flash (chip erase)", default=False, action="store_true")
             parser.add_argument("-k", "--key", help="AES key in hex, if you need encrypt your firmware.", required=False, default=None)
-            parser.add_argument("-v", "--version", help="Print version.", action='version', version='1.1.1')
+            parser.add_argument("-v", "--version", help="Print version.", action='version', version='1.1.2')
             parser.add_argument("--verbose", help="Increase output verbosity", default=False, action="store_true")
             parser.add_argument("-t", "--terminal", help="Start a terminal after finish (Python miniterm)", default=False, action="store_true")
             parser.add_argument("-n", "--noansi", help="Do not use ANSI colors, recommended in Windows CMD", default=False, action="store_true")
