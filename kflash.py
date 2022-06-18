@@ -1387,8 +1387,8 @@ class KFlash:
                     self.raise_exception( Exception(err) )
 
                 elffile = ELFFile(f)
-                if elffile['e_entry'] != 0x80000000:
-                    KFlash.log(WARN_MSG,"ELF entry is 0x%x instead of 0x80000000" % (elffile['e_entry']), BASH_TIPS['DEFAULT'])
+                if elffile['e_entry'] != 0x80000000 and elffile['e_entry'] != 0xffffffff80000000:
+                    KFlash.log(WARN_MSG,"ELF entry is 0x%x instead of 0x80000000 or 0xffffffff80000000" % (elffile['e_entry']), BASH_TIPS['DEFAULT'])
 
                 for segment in elffile.iter_segments():
                     t = describe_p_type(segment['p_type'])
