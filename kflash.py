@@ -35,7 +35,7 @@ class KFlash:
         else:
             print(*args, **kwargs)
 
-    def process(self, terminal=True, dev="", baudrate=1500000, board=None, sram = False, file="", callback=None, noansi=False, terminal_auto_size=False, terminal_size=(50, 1), slow_mode = False, addr=None, length=None):
+    def process(self, terminal=True, dev="", baudrate=1500000, board=None, sram = False, file="", callback=None, noansi=False, terminal_auto_size=False, terminal_size=(50, 1), slow_mode = False, io_mode = "dio", addr=None, length=None):
         self.killProcess = False
         BASH_TIPS = dict(NORMAL='\033[0m',BOLD='\033[1m',DIM='\033[2m',UNDERLINE='\033[4m',
                             DEFAULT='\033[0m', RED='\033[31m', YELLOW='\033[33m', GREEN='\033[32m',
@@ -1400,7 +1400,7 @@ class KFlash:
                         continue
                     self.flash_dataframe(segment.data(), segment['p_vaddr'])
 
-            def flash_firmware(self, firmware_bin, aes_key = None, address_offset = 0, sha256Prefix = True, filename = "", iomode = "dio"):
+            def flash_firmware(self, firmware_bin, aes_key = None, address_offset = 0, sha256Prefix = True, filename = "", io_mode = "dio"):
                 # type: (bytes, bytes, int, bool) -> None
                 # Don't remove above code!
 
@@ -1414,7 +1414,7 @@ class KFlash:
                     # Format: SHA256(after)(32bytes) + AES_CIPHER_FLAG (1byte) + firmware_size(4bytes) + firmware_data
                     aes_cipher_flag = b'\x01' if aes_key else b'\x00'
 
-                    if iomode == "dio":
+                    if io_mode == "dio":
                         # Enable DIO mode
                         aes_cipher_flag = bytes([int(aes_cipher_flag[0]) | 0x02])
                         KFlash.log(INFO_MSG, "Flash mode: DIO, Dual SPI serial throughput rates reach around 20 Mbps", BASH_TIPS['DEFAULT'])
@@ -1528,6 +1528,7 @@ class KFlash:
             args.Slow = slow_mode
             args.addr = addr
             args.length = length
+            args.iomode = io_mode
 
         if args.Board == "maixduino":
             args.Board = "goE"
@@ -1820,7 +1821,7 @@ class KFlash:
                     self.checkKillExit()
                     KFlash.log(INFO_MSG,"Writing",lBinFiles['bin'],"into","0x%08x"%int(lBinFiles['address'], 0),BASH_TIPS['DEFAULT'])
                     with open(os.path.join(tmpdir, lBinFiles["bin"]), "rb") as firmware_bin:
-                        self.loader.flash_firmware(firmware_bin.read(), None, int(lBinFiles['address'], 0), lBinFiles['sha256Prefix'], filename=lBinFiles['bin'], iomode=args.iomode)
+                        self.loader.flash_firmware(firmware_bin.read(), None, int(lBinFiles['address'], 0), lBinFiles['sha256Prefix'], filename=lBinFiles['bin'], io_mode=args.iomode)
         else:
             if args.firmware == "erase":
                 if args.addr.lower().startswith("0x"):
@@ -1849,9 +1850,9 @@ class KFlash:
                         if len(aes_key) != 16:
                             raise_exception( ValueError('AES key must by 16 bytes') )
 
-                        self.loader.flash_firmware(firmware_bin.read(), aes_key=aes_key, iomode=args.iomode)
+                        self.loader.flash_firmware(firmware_bin.read(), aes_key=aes_key, io_mode=args.iomode)
                     else:
-                        self.loader.flash_firmware(firmware_bin.read(), iomode=args.iomode)
+                        self.loader.flash_firmware(firmware_bin.read(), io_mode=args.iomode)
 
         # 3. boot
         KFlash.log(INFO_MSG,"Rebooting...", BASH_TIPS['DEFAULT'])
